@@ -65,7 +65,32 @@ function buildQuiz() {
 }
 
 function showResults() {
-    
+    // gather answer containers from our quiz
+    const answerContainers = quizContainer.querySelectorAll(".answers")
+
+    // keep track of user's answers
+    let numCorrect = 0
+
+    myQuestions.forEach((currentQuestion, questionNumber) => {
+        // find selected answer
+        const answerContainer = answerContainers[questionNumber]
+        const selector = `input[name=question${questionNumber}]:checked`
+        const userAnswer = (answerContainer.querySelector(selector) || {}).value
+
+        // if answer is correct
+        if (userAnswer === currentQuestion.correctAnswer) {
+            numCorrect++
+            // color the answers green
+            answerContainers[questionNumber].style.color = 'lightgreen'
+        }
+        // if answer is wrong or blank
+        else {
+            answerContainers[questionNumber].style.color = 'red'
+        }
+    })
+
+    // show number of correct answers out of total
+    resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`
 }
 // display quiz right away
 buildQuiz()
